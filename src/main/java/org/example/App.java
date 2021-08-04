@@ -8,11 +8,9 @@ import org.jboss.resteasy.plugins.server.servlet.HttpServletDispatcher;
 
 /**
  * Hello world!
- *
  */
-public class App 
-{
-    public static void main( String[] args ) throws Exception {
+public class App {
+    public static void main(String[] args) throws Exception {
         Server server = new Server(8080);
         server.setHandler(getHandlers());
         server.start();
@@ -21,7 +19,7 @@ public class App
 
     private static Handler getHandlers() {
         ServletContextHandler handler = new ServletContextHandler(ServletContextHandler.NO_SESSIONS);
-        handler.addServlet(HttpServletDispatcher.class,"/");
+        handler.addServlet(HttpServletDispatcher.class, "/");
         handler.setInitParameter("javax.ws.rs.Application", AppConfig.class.getCanonicalName());
         return handler;
     }

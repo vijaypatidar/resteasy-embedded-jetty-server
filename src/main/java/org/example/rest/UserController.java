@@ -1,13 +1,35 @@
 package org.example.rest;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
+import org.example.models.User;
+import org.example.services.UserService;
+
+import javax.ws.rs.*;
+import javax.ws.rs.container.AsyncResponse;
+import javax.ws.rs.container.Suspended;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 @Path("/user")
-public class UserController {
+public class UserController extends RestController {
+
+    private final UserService userService = new UserService();
 
     @GET
-    public String getUser(){
-        return "Vijay";
+    @Path("/{email}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public void getUser(@Suspended AsyncResponse asyncResponse, @PathParam("email") String email) throws InterruptedException {
+        asyncResponse.resume(userService.getUser(email).get());
+    }
+
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public void getUsers(@Suspended AsyncResponse asyncResponse) {
+        asyncResponse.resume(userService.getUsers());
+    }
+
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response ping(User user) {
+        return Response.ok("User created with " + user.getEmail()).build();
     }
 }
