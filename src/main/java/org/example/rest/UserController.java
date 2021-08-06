@@ -17,8 +17,8 @@ public class UserController extends RestController {
     @GET
     @Path("/{email}")
     @Produces(MediaType.APPLICATION_JSON)
-    public void getUser(@Suspended AsyncResponse asyncResponse, @PathParam("email") String email) throws InterruptedException {
-        asyncResponse.resume(userService.getUser(email).get());
+    public void getUser(@Suspended AsyncResponse asyncResponse, @PathParam("email") String email) {
+        asyncResponse.resume(userService.getUser(email).orElseThrow());
     }
 
     @GET
@@ -30,6 +30,7 @@ public class UserController extends RestController {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     public Response ping(User user) {
+        userService.insertUser(user);
         return Response.ok("User created with " + user.getEmail()).build();
     }
 }

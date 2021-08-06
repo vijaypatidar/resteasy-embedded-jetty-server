@@ -6,9 +6,6 @@ import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.example.configs.AppConfig;
 import org.jboss.resteasy.plugins.server.servlet.HttpServletDispatcher;
 
-/**
- * Hello world!
- */
 public class App {
     public static void main(String[] args) throws Exception {
         Server server = new Server(8080);
