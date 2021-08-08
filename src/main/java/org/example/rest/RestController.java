@@ -1,5 +1,5 @@
 package org.example.rest;
 
-public abstract class RestController {
+public abstract class RestController implements ResponseHelper {
 
 }

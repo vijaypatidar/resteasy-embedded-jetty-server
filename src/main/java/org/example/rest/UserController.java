@@ -8,29 +8,32 @@ import javax.ws.rs.container.AsyncResponse;
 import javax.ws.rs.container.Suspended;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.util.logging.Logger;
 
 @Path("/user")
 public class UserController extends RestController {
 
     private final UserService userService = new UserService();
+    private Logger logger = Logger.getLogger(getClass().getCanonicalName());
 
     @GET
     @Path("/{email}")
     @Produces(MediaType.APPLICATION_JSON)
     public void getUser(@Suspended AsyncResponse asyncResponse, @PathParam("email") String email) {
-        asyncResponse.resume(userService.getUser(email).orElseThrow());
+        okReply(asyncResponse, userService.getUser(email).orElseThrow());
     }
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public void getUsers(@Suspended AsyncResponse asyncResponse) {
-        asyncResponse.resume(userService.getUsers());
+        okReply(asyncResponse, userService.getUsers());
     }
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     public Response ping(User user) {
         userService.insertUser(user);
-        return Response.ok("User created with " + user.getEmail()).build();
+        logger.info("USER CREATED " + user.getEmail());
+        return okReply("User created with " + user.getEmail());
     }
 }
